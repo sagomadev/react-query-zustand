@@ -5,8 +5,17 @@ function App() {
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
-  console.log(data);
-  return <div>Finish</div>;
+
+  return (
+    <main>
+      <ul>
+        <h2>Repositorios</h2>
+        {data?.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+    </main>
+  );
 }
 
 export default App;
