@@ -1,4 +1,5 @@
 import { Repository } from "../hooks/types";
+import { useFavoriteReposStore } from "../store/favoriteRepos";
 
 type CardProps = {
   repository: Repository;
@@ -6,11 +7,26 @@ type CardProps = {
 };
 
 function Card({ repository, isFavorite }: CardProps) {
+  const addFavoriteRepo = useFavoriteReposStore(
+    (state) => state.addFavoriteRepo
+  );
+  const removeFavoriteRepo = useFavoriteReposStore(
+    (state) => state.removeFavoriteRepo
+  );
+
+  const handleButtonclick = () => {
+    isFavorite
+      ? removeFavoriteRepo(repository.id)
+      : addFavoriteRepo(repository.id);
+  };
+
   return (
     <li>
       <h3>{repository.name}</h3>
       <p>{repository.description}</p>
-      <button>{isFavorite ? "Dislike" : "like"}</button>
+      <button onClick={handleButtonclick}>
+        {isFavorite ? "dislike" : "like"}
+      </button>
     </li>
   );
 }
