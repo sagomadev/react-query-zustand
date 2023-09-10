@@ -1,12 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import api from "../api/github";
 import { Repository } from "./types";
 
-async function fetchRepos() {
-  const { data } = await api.get<Repository[]>("/users/sagoma-dev/repos");
+async function fetchRepos(ctx: QueryFunctionContext) {
+  const [, githubUser] = ctx.queryKey;
+  const { data } = await api.get<Repository[]>(`/users/${githubUser}/repos`);
   return data;
 }
 
-export function useFetchRepositories() {
-  return useQuery(["repos"], fetchRepos);
+export function useFetchRepositories(user: string) {
+  return useQuery(["repos", user], fetchRepos);
 }
